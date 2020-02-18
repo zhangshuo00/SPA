@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>矩形计算器</title>
+</head>
+<body>
+    width：<input type="text"><br>
+    height：<input type="text"><br>
+    <button onclick="calcul()">计算</button><br>
+    perimeter：<input type="text"><br>
+    area：<input type="text">
+</body>
+<script>
+    function calcul(){
+        const children = document.getElementsByTagName('input');
+        children[2].value = (children[0].value*2 + children[1].value*2)
+        children[3].value = (children[0].value * children[1].value)
+    }
+</script>
+</html>
