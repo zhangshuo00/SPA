@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>定时器组件UI</title>
+    <link rel="stylesheet" href="./index.css">
+</head>
+<body>
+    <input id="add" type="button" value="添加定时器按钮">
+    <hr>
+    <div id="main"></div>
+    <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.js"></script>
+    <script src="./index.js"></script>
+</body>
+<script>
+    $(function(){
+        var add = $('#add')
+        add.click(function(){
+            console.l('add timer button')
+        })
+    })
+
+</script>
+</html>
