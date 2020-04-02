@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title></title>
+		<link rel="stylesheet" type="text/css" href="css/common.css" />
+		<link rel="stylesheet" href="style.css">
+	</head>
+	<body>
+		<div class="box" id="box">
+
+		</div>
+	</body>
+	<script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.js"></script>
+	<script>
+		$(function(){
+			$banner.show(data)
+		})
+		var data = {
+			imgUrl:[// 自定义组件的图片
+				"img/b5.png",
+				"img/b1.png",
+				"img/b2.png",
+				"img/b3.png",
+				"img/b4.png",
+				"img/b5.png",
+				"img/b1.png"
+			],
+			container:'#box',
+			page:1,
+			timer:'',
+			isSliding:false
+		}
+		var $banner = (function(){
+			function show(data){
+				// 渲染组件模版
+				var $slider = $('<div class="slider" id="slider"></div>'),
+					$left = $('<span id="left"><</span>'),
+					$right = $('<span id="right">></span>'),
+					$nav = $('<ul class="nav" id="navs"></ul>'),
+					$navs = $nav.children();
+				$(data.container).append($slider)
+				for(let i=0;i<data.imgUrl.length;i++){
+					$slider.append('<div class="slide"><img src='+data.imgUrl[i]+' alt=""></div>')
+				}
+				$(data.container).append($left)
+				$(data.container).append($right)
+				$(data.container).append($nav)
+				for(let j=0;j<data.imgUrl.length-2;j++){
+					$nav.append('<li>'+(j+1)+'</li>')
+				}
+
+				data.timer = setInterval(() => {
+					moveFront(data)
+				}, 3000)
+
+				$(data.container).mouseover(()=>{
+					$left.css('opacity','0.5')
+					$right.css('opacity','0.5')
+					clearInterval(data.timer)
+				})
+				
+				$(data.container).mouseout(()=>{
+					$left.css('opacity','0')
+					$right.css('opacity','0')
+					data.timer = setInterval(() => {
+						moveFront(data)
+					}, 3000);
+				})
+
+				$right.on('click',()=>{
+					if(!data.isSliding)
+						moveFront(data)
+				})
+				$left.on('click',()=>{
+					if(!data.isSliding)
+						moveBack(data)
+				})
+
+				for(let i=0;i<$navs.length;i++){
+					(function(j){
+						$navs[j].onclick = ()=>{
+							if(!data.isSliding){
+								data.page = j
+								$slider.stop().animate({
+									'left':(data.page+1)*-1200
+								},1000)
+								item(data.page+1)
+							}
+						}
+					})(i)
+				}
+			}
+			function moveFront (data){
+				var $slider = $('#slider')
+				data.isSliding = true
+				setTimeout(() => {
+					data.isSliding = false
+				}, 1000)
+				data.page++
+				if(data.page === data.imgUrl.length-1){
+					data.page = 1
+					$slider.css('left','0')
+				}
+				item(data.page)
+				$slider.stop().animate({
+					left:data.page*-1200
+				},1000)
+			}
+
+			function moveBack (data){
+				var $slider = $('#slider')
+				data.isSliding = true
+				setTimeout(() => {
+					data.isSliding = false
+				}, 1000)
+				data.page--
+				if(data.page === 0){
+					data.page = data.imgUrl.length-2
+					$slider.css('left','-7200px')
+				}
+				item(data.page)
+				$slider.stop().animate({
+					left:data.page*-1200
+				},1000)
+			}
+
+			function item (idx){
+				var $nav = $('#navs')
+				for(let i=0;i<$nav.children().length;i++){
+					$nav.children()[i].className = ''
+				}
+				$nav.children()[idx-1].className = 'active'
+			}
+			return{
+				show:show
+			}
+		})()
+	</script>
+</html>
